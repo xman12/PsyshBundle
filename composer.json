@@ -1,5 +1,5 @@
 {
-    "name": "theofidry/psysh-bundle",
+    "name": "xman12/psysh-bundle",
     "type": "symfony-bundle",
     "description": "A port of the PHP REPL PsySH for Symfony.",
     "keywords": ["console", "psysh", "shell", "REPL", "symfony", "interactive"],
@@ -13,6 +13,11 @@
             "name": "Théo FIDRY",
             "email": "theo.fidry@gmail.com",
             "homepage": "https://github.com/theofidry"
+        },
+        {
+            "name": "Belyshev Aleksandr",
+            "email": "xman12@mail.ru",
+            "homepage": "https://github.com/xman12"
         }
     ],
 
