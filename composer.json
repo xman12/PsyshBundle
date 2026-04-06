@@ -35,7 +35,7 @@
 
     "autoload": {
         "psr-4": {
-            "Fidry\\PsyshBundle\\": "src"
+            "xman12\\PsyshBundle\\": "src"
         },
         "files": [
             "src/psysh.php"
@@ -43,7 +43,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Fidry\\PsyshBundle\\": "tests"
+            "xman12\\PsyshBundle\\": "tests"
         }
     },
 
