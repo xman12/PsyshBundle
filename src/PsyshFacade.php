@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fidry\PsyshBundle;
+namespace xman12\PsyshBundle;
 
 use Psy\Shell;
 use RuntimeException;

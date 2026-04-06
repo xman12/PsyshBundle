@@ -47,7 +47,7 @@ With [Symfony Flex](https://github.com/symfony/flex), the bundle is registered a
 // config/bundles.php
 return [
     // ...
-    Fidry\PsyshBundle\PsyshBundle::class => ['dev' => true, 'test' => true],
+    xman12\PsyshBundle\PsyshBundle::class => ['dev' => true, 'test' => true],
 ];
 ```
 
@@ -69,7 +69,7 @@ Once inside the shell, you have immediate access to `$container`, `$kernel`, `$p
 Place a `psysh()` call anywhere in your code to drop into an interactive shell at that point:
 
 ```php
-use function Fidry\PsyshBundle\psysh;
+use function xman12\PsyshBundle\psysh;
 
 class OrderService
 {

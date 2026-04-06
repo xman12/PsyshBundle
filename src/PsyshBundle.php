@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Fidry\PsyshBundle;
+namespace xman12\PsyshBundle;
 
-use Fidry\PsyshBundle\DependencyInjection\Compiler\AddPsyshCommandPass;
+use xman12\PsyshBundle\DependencyInjection\Compiler\AddPsyshCommandPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

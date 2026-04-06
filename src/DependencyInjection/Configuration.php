@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fidry\PsyshBundle\DependencyInjection;
+namespace xman12\PsyshBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

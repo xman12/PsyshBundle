@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fidry\PsyshBundle\DependencyInjection;
+namespace xman12\PsyshBundle\DependencyInjection;
 
 use Psy\Command\Command;
 use Symfony\Component\Config\FileLocator;

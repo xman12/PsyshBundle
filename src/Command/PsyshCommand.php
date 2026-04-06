@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fidry\PsyshBundle\Command;
+namespace xman12\PsyshBundle\Command;
 
 use Psy\Output\ShellOutput;
 use Psy\Shell;

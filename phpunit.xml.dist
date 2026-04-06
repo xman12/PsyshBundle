@@ -5,7 +5,7 @@
          bootstrap="vendor/autoload.php">
 
     <php>
-        <server name="KERNEL_CLASS" value="Fidry\PsyshBundle\Functional\AppKernel" />
+        <server name="KERNEL_CLASS" value="xman12\PsyshBundle\Functional\AppKernel" />
     </php>
 
     <testsuites>

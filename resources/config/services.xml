@@ -15,12 +15,12 @@
             <argument type="service" id="Psy\Configuration" />
         </service>
 
-        <service id="psysh.command.shell_command" class="Fidry\PsyshBundle\Command\PsyshCommand" public="true">
+        <service id="psysh.command.shell_command" class="xman12\PsyshBundle\Command\PsyshCommand" public="true">
             <argument type="service" id="psysh.shell" />
             <tag name="console.command" command="psysh" />
         </service>
 
-        <service id="psysh.facade" class="Fidry\PsyshBundle\PsyshFacade" public="true">
+        <service id="psysh.facade" class="xman12\PsyshBundle\PsyshFacade" public="true">
             <call method="setContainer">
                 <argument type="service" id="test.service_container" />
             </call>

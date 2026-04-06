@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fidry\PsyshBundle\Command;
+namespace xman12\PsyshBundle\Command;
 
 use PHPUnit\Framework\TestCase;
 use Psy\Shell;
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use function is_a;
 
 /**
- * @covers \Fidry\PsyshBundle\Command\PsyshCommand
+ * @covers \xman12\PsyshBundle\Command\PsyshCommand
  *
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
