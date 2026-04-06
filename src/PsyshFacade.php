@@ -13,14 +13,13 @@ namespace Fidry\PsyshBundle;
 
 use Psy\Shell;
 use RuntimeException;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use function array_merge;
 
 /**
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-final class PsyshFacade implements ContainerAwareInterface
+final class PsyshFacade
 {
     private static Shell $shell;
 
@@ -48,7 +47,7 @@ final class PsyshFacade implements ContainerAwareInterface
         self::$shell::debug($_variables, $bind);
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public function setContainer(?ContainerInterface $container = null): void
     {
         self::$container = $container;
     }

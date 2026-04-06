@@ -14,7 +14,6 @@ namespace Fidry\PsyshBundle\Functional;
 use Fidry\PsyshBundle\PsyshBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel;
 
 /**
