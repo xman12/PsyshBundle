@@ -1,23 +1,25 @@
 # PsyshBundle
 
-[![Package version](http://img.shields.io/packagist/v/theofidry/psysh.svg?style=flat-square)](https://packagist.org/packages/theofidry/psysh-bundle)
-[![Build Status](https://img.shields.io/travis/theofidry/PsyshBundle.svg?branch=master&style=flat-square)](https://travis-ci.org/theofidry/PsyshBundle?branch=master)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/theofidry/PsyshBundle.svg?style=flat-square)](https://scrutinizer-ci.com/g/theofidry/PsyshBundle/?branch=master)
+[![Package version](https://img.shields.io/packagist/v/theofidry/psysh-bundle.svg?style=flat-square)](https://packagist.org/packages/theofidry/psysh-bundle)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/theofidry/PsyshBundle/tests.yaml?branch=master&style=flat-square)](https://github.com/theofidry/PsyshBundle/actions)
 [![License](https://img.shields.io/badge/license-MIT-red.svg?style=flat-square)](LICENSE)
 
-A bundle to use the php REPL [PsySH][1] with [Symfony][2]. Learn more at [psysh.org][1] and check out the [Interactive Debugging in PHP talk from OSCON](https://presentate.com/bobthecow/talks/php-for-pirates) on Presentate.
+A bundle to use the PHP REPL [PsySH][1] with [Symfony][2]. Learn more at [psysh.org][1].
 
-What does it do exactly?
-* Loads [PsySH][1] with the application dependencies
-* Gives access to the following variables:
+**Requirements:** PHP 8.1+, Symfony 6.4+
 
-| Variable              | Description                          |
-|-----------------------|--------------------------------------|
-| `$container`          | Instance of Symfony ServiceContainer |
-| `$kernel`             | Instance of Symfony Kernel           |
-| `$parameters`         | Instance of Symfony parameters       |
+What does it do?
+- Loads [PsySH][1] with the full application container
+- Exposes the following variables out of the box:
 
-Aside from that it's the plain old [PsySH][1]! You can also [customize it](#customize-psysh) to add your own variables.
+| Variable       | Description                                      |
+|----------------|--------------------------------------------------|
+| `$container`   | The Symfony service container (TestContainer)    |
+| `$kernel`      | The application kernel                           |
+| `$parameters`  | All container parameters                         |
+| `$self`        | The PsySH shell instance itself                  |
+
+You can also [add your own variables](#adding-custom-variables) via configuration.
 
 
 ## Documentation
@@ -33,93 +35,88 @@ Aside from that it's the plain old [PsySH][1]! You can also [customize it](#cust
 
 ## Install
 
-You can use [Composer](https://getcomposer.org/) to install the bundle to your project:
+Install via [Composer](https://getcomposer.org/):
 
 ```bash
 composer require --dev theofidry/psysh-bundle
 ```
 
-Then, enable the bundle by updating your `app/AppKernel.php` file to enable the bundle:  
-(not needed on symfony 5, bundle is automaticaly registred in `config/bundles.php`)
+With [Symfony Flex](https://github.com/symfony/flex), the bundle is registered automatically in `config/bundles.php`. If you manage bundles manually, add it only for `dev`/`test` environments:
+
 ```php
-<?php
-// app/AppKernel.php
-
-public function registerBundles()
-{
-    //...
-
-    if (in_array($this->getEnvironment(), ['dev', 'test'])) {
-        //...
-        $bundles[] = new Fidry\PsyshBundle\PsyshBundle();
-    }
-
-    return $bundles;
-}
+// config/bundles.php
+return [
+    // ...
+    Fidry\PsyshBundle\PsyshBundle::class => ['dev' => true, 'test' => true],
+];
 ```
+
 
 ## Usage
 
+### Interactive shell
+
 ```bash
-# Symfony > 4.0
 bin/console psysh
 ```
 
-or
+Once inside the shell, you have immediate access to `$container`, `$kernel`, `$parameters` and `$self`.
+
+![PsySH Shell](doc/images/shell.png)
+
+### Inline breakpoints
+
+Place a `psysh()` call anywhere in your code to drop into an interactive shell at that point:
 
 ```php
-use function psysh
+use function Fidry\PsyshBundle\psysh;
 
-class X
+class OrderService
 {
-    function foo()
+    public function process(Order $order): void
     {
-        psysh(get_defined_vars(), $this);   // Debug with the current context
+        // Drop into a shell with $order available and the current object bound
+        psysh(['order' => $order], $this);
     }
 }
 ```
 
-![PsySH Shell](doc/images/shell.png)
-
-[Go further](#documentation).
+[Go further with the docs](#documentation).
 
 
 ## Customize PsySH
 
 ### Adding a custom command
-Adding a custom command for PsySH is as simple as defining a service with `psysh.command` tag!
+
+Tag any class extending `Psy\Command\Command` with `psysh.command`. With autoconfigure enabled (the default in Symfony 6.4), no explicit tag is needed — the bundle detects these classes automatically:
 
 ```yaml
-services:
-    my_psysh_command:
-        class: Acme\Shell\MyCommand
-        tags:
-            - { name: psysh.command }
-```
-
-Or even simpler if you use Symfony 3.3+:
-
-```yaml
+# config/services.yaml
 services:
     _defaults:
         autoconfigure: true
         autowire: true
-        public: false
 
     Acme\Shell\MyCommand: ~
 ```
 
-> PsyshBundle provides autoconfiguration for custom Psysh command services, as long as they inherit from
-> `Psy\Command\ReflectingCommand` or `Psy\Command\Command`.
-
-### Adding custom variables
-It is possible to add custom variables to the shell via configuration.
-Variables can be of any type, container parameters references (e.g. `%kernel.debug%`) or even services
-(prefixed with `@`, e.g. `"@my_service"`).
+To add the tag explicitly:
 
 ```yaml
-# app/config/config_dev.yml
+services:
+    Acme\Shell\MyCommand:
+        tags:
+            - { name: psysh.command }
+```
 
+> The bundle autoconfigures any service that inherits from `Psy\Command\Command` or `Psy\Command\ReflectingCommand`.
+
+### Adding custom variables
+
+Declare extra shell variables in `config/packages/dev/psysh.yaml`:
+
+```yaml
+# config/packages/dev/psysh.yaml
 psysh:
     variables:
         foo: bar
@@ -128,27 +125,26 @@ psysh:
         debug: "%kernel.debug%"
 ```
 
-Now if you run `php app/console psysh` and then `ls`, you will see the variables `$foo`, `$router`, `$some` and `$debug`,
-in addition to already defined variables:
+Variables can be:
+- scalar values
+- container parameter references (e.g. `%kernel.debug%`)
+- service references (prefixed with `@`, e.g. `"@router"`)
+- arrays
+
+After running `bin/console psysh`, inspect available variables with `ls`:
 
 ```
 >>> ls
-Variables: $foo, $router, $some, $debug...
+Variables: $container, $kernel, $parameters, $self, $foo, $router, $some, $debug
 ```
-
-Default variables are:
-- `$container` (the service container)
-- `$kernel`
-- `$parameters` (all container parameters)
-- `$self` (the PsySH shell itself)
 
 
 ## Credits
 
 This bundle is developed by [Théo FIDRY](https://github.com/theofidry). This project has been made possible thanks to:
 
-* [Justin Hileman](https://github.com/bobthecow): author of [PsySH][1] and [all the contributors of the PsySH project](https://github.com/bobthecow/psysh/graphs/contributors)
-* [Adrian Palmer](https://github.com/navitronic): gave the lead for porting [PsySH][1] on [Symfony][2]
+- [Justin Hileman](https://github.com/bobthecow): author of [PsySH][1] and [all the contributors](https://github.com/bobthecow/psysh/graphs/contributors)
+- [Adrian Palmer](https://github.com/navitronic): gave the lead for porting [PsySH][1] to [Symfony][2]
 
 
 [1]: https://psysh.org/
