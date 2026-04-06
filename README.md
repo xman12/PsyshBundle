@@ -38,7 +38,7 @@ You can also [add your own variables](#adding-custom-variables) via configuratio
 Install via [Composer](https://getcomposer.org/):
 
 ```bash
-composer require --dev theofidry/psysh-bundle
+composer require --dev xman12/psysh-bundle
 ```
 
 With [Symfony Flex](https://github.com/symfony/flex), the bundle is registered automatically in `config/bundles.php`. If you manage bundles manually, add it only for `dev`/`test` environments:
